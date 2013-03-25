@@ -1,13 +1,15 @@
-
 /**
  * Module dependencies.
  */
 
 var express = require('express')
-  , routes = require('./routes')
-  , http = require('http');
+, routes = require('./routes')
+, http = require('http');
 
 var app = express();
+
+var intervals = {};
+var iterations = 10;
 
 app.configure(function(){
   app.set('port', process.env.PORT || 4000);
@@ -25,7 +27,31 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
+app.get('/', function(req, res) {
+  console.log("word");
+  res.send("word, son");
+});
+
+app.post('/transcode', function(req, res) {
+  console.log("transcode upload "+req.body.id);
+  var i = 0;
+  if(intervals[req.body.id] === undefined){
+    intervals[req.body.id] = setInterval(function() {
+      console.log("job ping", req.body.id, i);
+      if(i++ == iterations){
+        clearInterval(intervals[req.body.id]);
+      }
+    }, 3000);
+    res.send("started an interval for "+req.body.id);
+  }else{
+    res.send("interval for "+req.body.id+" defined");
+  }
+});
+
+app.del('/transcode/:id', function(req, res) {
+  clearInterval(intervals[req.params.id]);
+  res.send("deleting that job with the id "+req.params.id);
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
