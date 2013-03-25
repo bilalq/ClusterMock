@@ -28,8 +28,8 @@ app.configure('development', function(){
 });
 
 app.get('/', function(req, res) {
-  console.log("word");
-  res.send("word, son");
+  console.log("someone hit index");
+  res.send("yes this api is up");
 });
 
 app.post('/transcode', function(req, res) {
@@ -50,6 +50,7 @@ app.post('/transcode', function(req, res) {
 
 app.del('/transcode/:id', function(req, res) {
   clearInterval(intervals[req.params.id]);
+  delete intervals[req.params.id];
   res.send("deleting that job with the id "+req.params.id);
 });
 
