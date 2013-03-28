@@ -2,8 +2,8 @@ var express = require('express')
 , request = require('request')
 , http = require('http')
 , app = express()
-, iterations = 10
-, chunkSize = 100
+, iterations = 20
+, chunkSize = 0.5
 , intervals = {}
 
 app.configure(function(){
@@ -33,7 +33,7 @@ app.post('/transcode', function(req, res) {
       request.put("http://tranquil-atoll-9763.herokuapp.com/jobs/progression/" + req.body.id
         , {json: { chunks_tcoded_so_far: i}}
         , function(err){
-          console.log('sent', req.body.id, i)
+          console.log('sent', req.body.id, i*chunkSize)
           if(err){
             //sadness
             console.log(err)
