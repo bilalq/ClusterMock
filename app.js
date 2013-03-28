@@ -31,8 +31,9 @@ app.post('/transcode', function(req, res) {
     intervals[req.body.id] = setInterval(function() {
       console.log("job ping", req.body.id, i)
       request.put("http://tranquil-atoll-9763.herokuapp.com/jobs/progression/" + req.body.id
-        , {json: { chunks_tcoded_so_far: i*10 }}
+        , {json: { chunks_tcoded_so_far: i}}
         , function(err){
+          console.log('sent', req.body.id, i)
           if(err){
             //sadness
             console.log(err)
