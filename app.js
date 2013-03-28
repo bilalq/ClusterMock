@@ -2,8 +2,8 @@ var express = require('express')
 , request = require('request')
 , http = require('http')
 , app = express()
-, iterations = 20
-, chunkSize = 0.5
+, iterations = 40
+, chunkSize = 0.25
 , intervals = {}
 
 app.configure(function(){
