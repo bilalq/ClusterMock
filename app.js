@@ -17,11 +17,18 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler())
+  app.set('zipreel_url', "http://localhost:3000")
+})
+
+app.configure('production', function(){
+  app.use(express.errorHandler())
+  app.set('zipreel_url', "http://tranquil-atoll-9763.herokuapp.com")
 })
 
 app.get('/', function(req, res) {
   console.log("someone hit index")
-  res.send("yes this api is up")
+  var t = app.settings.env
+  res.send("yes this api is up. PUT-ting request to " + app.get('zipreel_url'))
 })
 
 app.post('/transcode', function(req, res) {
@@ -30,7 +37,7 @@ app.post('/transcode', function(req, res) {
   if(intervals[req.body.id] === undefined){
     intervals[req.body.id] = setInterval(function() {
       console.log("job ping", req.body.id, i)
-      request.put("http://tranquil-atoll-9763.herokuapp.com/jobs/progression/" + req.body.id
+      request.put(app.get('zipreel_url') + "/jobs/progression/" + req.body.id
         , {json: { chunks_tcoded_so_far: i}}
         , function(err){
           console.log('sent', req.body.id, i*chunkSize)
