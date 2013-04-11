@@ -138,8 +138,8 @@ app.get('/', function(req, res) {
 /* create job | POST /transcode */
 app.post('/transcode', function(req, res) {
   console.log("POST /transcode")
-  var jobId = req.param('job_id')
-  , size = req.param('size') || Math.floor(Math.random()*2000)
+  var jobId = req.param('id')
+  , size = req.param('video').size || Math.floor(Math.random()*2000)
   
   /* error if job already exists in jobs hashmap */
   if(jobs.hasOwnProperty(jobId)) {
