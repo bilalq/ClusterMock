@@ -23,13 +23,13 @@ var express = require('express')
     app.set('port', process.env.PORT || 4000)
     
     /* speed is the average interval between updates */
-    app.set('speed', 1000)
+    app.set('speed', 3000)
   })
   
   /* configure express for development environment */
   app.configure('development', function() {
     app.use(express.errorHandler())
-    app.set('zipreel_url', "http://localhost:"+app.get('port'))
+    app.set('zipreel_url', "http://localhost:3000")
   })
   
   /* configure express for production environment */
@@ -89,7 +89,16 @@ Job.prototype = {
         , speed: 20
         }
       }
-      request.put(postUrl, {json: jsonData})
+      request.put(postUrl
+        , {json: jsonData}
+        , function(err){
+          console.log('attemping to PUT to ' + postUrl )
+          if(err){
+            //sadness
+            console.log(err)
+          }
+        }
+      )
       console.log(jsonData)
       console.log(this.processed, this.totalBytes)
   }
@@ -139,7 +148,7 @@ app.get('/', function(req, res) {
 app.post('/transcode', function(req, res) {
   console.log("POST /transcode")
   var jobId = req.param('id')
-  , size = req.param('video').size || Math.floor(Math.random()*2000)
+  , size = req.body.video.size || Math.floor(Math.random()*2000)
   
   /* error if job already exists in jobs hashmap */
   if(jobs.hasOwnProperty(jobId)) {
@@ -150,6 +159,8 @@ app.post('/transcode', function(req, res) {
   } else {
     var newJob = new Job(jobId, size)
     newJob.sendStatus()
+    res.send("Created a JOB in clusterMock for "+jobId)
+
     
     /* generate repeating event updating and sending state */
     newJob.start(app.get('speed')*2*Math.random(), function() {
