@@ -147,7 +147,7 @@ app.get('/', function(req, res) {
 /* create job | POST /transcode */
 app.post('/transcode', function(req, res) {
   console.log("POST /transcode")
-  var jobId = req.param('id')
+  var jobId = req.body.id
   , size = req.body.video.size || Math.floor(Math.random()*2000)
   
   /* error if job already exists in jobs hashmap */
