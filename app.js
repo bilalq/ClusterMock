@@ -85,7 +85,7 @@ Job.prototype = {
         jsonData.metrics = {}
       } else {
         jsonData.metrics = {
-          bytes: 100
+          bytes: this.processed
         , speed: 20
         }
       }
