@@ -117,8 +117,8 @@ Job.prototype = {
             this.status = 'update'
           }
         }
-        /* increase processed by a value between 0 and 10 */
-        this.processed += Math.floor(Math.random()*10)
+        /* increase processed by a value between 0 and 5000 */
+        this.processed += Math.floor(Math.random()*5000)
         if(this.processed >= this.totalBytes){
           this.status = 'finish'
         }
@@ -147,6 +147,7 @@ app.get('/', function(req, res) {
 /* create job | POST /transcode */
 app.post('/transcode', function(req, res) {
   console.log("POST /transcode")
+  console.log(req.body)
   var jobId = req.body.id
   , size = req.body.video.size || Math.floor(Math.random()*2000)
   
