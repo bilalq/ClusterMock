@@ -72,7 +72,19 @@ Job.prototype = {
         , stage: this.stage
       }
       , postUrl = app.get('zipreel_url') + '/jobs/'+this.jobId+'/progression' 
-      if(this.stage === "chunk") {
+      if(this.stage == 'pull' && this.status == 'finish') {
+        jsonData.metrics = {
+            bytes: this.processed
+          , speed: 20
+          , input_codec: 'mpeg2video'
+          , input_width: 1280
+          , input_height: 720
+          , input_duration: 300.0
+          , input_bitrate : 21979
+          , input_frames_per_sec: 61.58
+        }
+
+      } else if(this.stage === "chunk") {
         jsonData.metrics = {
           chunk_count: Math.floor(Math.random()*100)
         }
