@@ -129,8 +129,8 @@ Job.prototype = {
             this.status = 'update'
           }
         }
-        /* increase processed by a value between 0 and 5000 */
-        this.processed += Math.floor(Math.random()*5000)
+        /* increase processed by a value between 0 and 20000 */
+        this.processed += Math.floor(Math.random()*20000)
         if(this.processed >= this.totalBytes){
           this.status = 'finish'
         }
