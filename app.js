@@ -75,7 +75,7 @@ Job.prototype = {
       if(this.stage == 'pull' && this.status == 'finish') {
         jsonData.metrics = {
             bytes: this.processed
-          , speed: 20
+          , speed: Math.floor(Math.random()*500)
           , input_codec: 'mpeg2video'
           , input_width: 1280
           , input_height: 720
@@ -98,7 +98,7 @@ Job.prototype = {
       } else {
         jsonData.metrics = {
           bytes: this.processed
-        , speed: 20
+        , speed: Math.floor(Math.random()*500) 
         }
       }
       request.put(postUrl
