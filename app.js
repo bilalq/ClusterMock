@@ -90,7 +90,7 @@ Job.prototype = {
         }
       } else if(this.stage === "merger") {
         jsonData.metrics = {
-            output_size: 243.5
+            output_size: 9000
           , output_url: "http://placekitten.com/600/420"
         }
       } else if(this.stage === 'cleanup') {
