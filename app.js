@@ -45,8 +45,9 @@ var Job = function(jobId, size) {
     this.jobId = jobId
     this.status = 'start'
     this.stage = 'pull'
+    this.error = ''
     this.totalBytes = size
-    this.processed = 0
+    this.processed = 80000
   }
 
 /* define the Job class public methods */
@@ -70,18 +71,26 @@ Job.prototype = {
       var jsonData = {
           status: this.status
         , stage: this.stage
+        , error: this.error
       }
       , postUrl = app.get('zipreel_url') + '/jobs/'+this.jobId+'/progression' 
       if(this.stage == 'pull' && this.status == 'finish') {
         jsonData.metrics = {
-            bytes: this.processed
-          , speed: Math.floor(Math.random()*500)
-          , input_codec: 'mpeg2video'
-          , input_width: 1280
-          , input_height: 720
-          , input_duration: 300.0
-          , input_bitrate : 21979
-          , input_frames_per_sec: 61.58
+          bytes: this.processed
+        , speed: Math.floor(Math.random()*500)
+        , input_codec: 'mpeg2video'
+        , input_width: 1280
+        , input_height: 720
+        , input_duration: 300.0
+        , input_bitrate : 21979
+        , input_frames_per_sec: 61.58
+        }
+      } else if(this.stage == 'transcode' && this.status == 'update') {
+        this.error = 'Error in transcoding'
+        console.log('#########################')
+        jsonData.metrics = {
+          bytes: this.processed
+        , speed: Math.floor(Math.random()*500) 
         }
 
       } else if(this.stage === "chunk") {
@@ -90,8 +99,8 @@ Job.prototype = {
         }
       } else if(this.stage === "merger") {
         jsonData.metrics = {
-            output_size: 9000
-          , output_url: "http://placekitten.com/600/420"
+          output_size: 9000
+        , output_url: "http://placekitten.com/600/420"
         }
       } else if(this.stage === 'cleanup') {
         jsonData.metrics = {}
